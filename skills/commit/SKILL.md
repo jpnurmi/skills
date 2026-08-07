@@ -7,13 +7,10 @@ description: Use for every request to commit changes or draft a commit message. 
 
 ## Before Committing
 
-```bash
-git branch --show-current
-```
-
-If the branch is `main` or `master`, create a feature branch unless the user
-explicitly requested a direct commit. Re-check the branch and stop if it is
-still `main` or `master`.
+Commit to the current branch unless the user explicitly mentioned a specific
+branch or requested a feature branch. If the user mentioned or requested a
+specific branch, either checkout that branch if it already exists, or create it
+if it does not, and then commit to that branch.
 
 Commit one coherent, independently reviewable change at a time.
 
@@ -46,8 +43,8 @@ without logic changes, and `meta` for repository metadata.
 
 ## Footers
 
-- `Fixes <issue>` closes an issue when merged.
-- `Refs <issue>` links an issue without closing it.
+- `Fixes: <#NNNN>` closes an issue when merged.
+- `Ref: <#NNNN>` links an issue without closing it.
 - For breaking changes, add `BREAKING CHANGE: <impact>`.
 
 ## Creating the Commit
@@ -58,5 +55,5 @@ Use separate `-m` arguments for paragraphs and footers. Never put literal
 ```bash
 git commit -m "fix(api): Handle null response in user endpoint" \
   -m "Return 404 when the user API finds a deleted account." \
-  -m "Fixes SENTRY-5678"
+  -m "Fix: #5678"
 ```
