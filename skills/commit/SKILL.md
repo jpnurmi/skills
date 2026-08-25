@@ -28,10 +28,11 @@ Use:
 
 - Scope is optional. Add `!` before `:` for a breaking change.
 - Write the subject in imperative, present tense; capitalize it, omit the
-  trailing period, and keep it at 70 characters or fewer.
+  trailing period, and keep it at 72 characters or fewer. State what changed.
 - Keep every line under 100 characters.
-- Use the body only when useful. Explain what changed and why, including
-  previous behavior or motivation when it helps.
+- Use the body only when useful. Explain what changed, and especially why the
+  change was needed, including previous behavior or motivation when it helps.
+  Wrap body lines at 72 characters.
 - Never include customer or organization names, user emails, support ticket
   contents, secrets, or PII. Describe the technical symptom instead.
 
