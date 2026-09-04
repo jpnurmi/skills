@@ -47,8 +47,9 @@ without logic changes, and `meta` for repository metadata.
 
 ## Footers
 
-- `Fixes: <#NNNN>` closes an issue when merged.
-- `Ref: <#NNNN>` links an issue without closing it.
+- `Fixes: <#NNNN>` for bug fixes.
+- `Close: <#NNNN>` for tasks and feature requests.
+- `Ref: <#NNNN>` for non-closing reference links.
 - For breaking changes, add `BREAKING CHANGE: <impact>`.
 
 ## Creating the Commit
