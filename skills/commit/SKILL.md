@@ -33,6 +33,9 @@ Use:
 - Use the body only when useful. Explain what changed, and especially why the
   change was needed, including previous behavior or motivation when it helps.
   Wrap body lines at 72 characters.
+- In the body, wrap identifiers and keywords in single backticks.
+- Put code snippets in fenced code blocks with triple backticks and a language
+  identifier.
 - Never include customer or organization names, user emails, support ticket
   contents, secrets, or PII. Describe the technical symptom instead.
 
