@@ -33,7 +33,7 @@ Use:
 - Use the body only when useful. Explain what changed, and especially why the
   change was needed, including previous behavior or motivation when it helps.
   Wrap body lines at 72 characters.
-- In the body, wrap identifiers and keywords in single backticks.
+- In the body, wrap keywords, type names, function names, and other identifiers in single backticks (e.g., `MyType`, `myFunction`, `keyword`).
 - Put code snippets in fenced code blocks with triple backticks and a language
   identifier.
 - Never include customer or organization names, user emails, support ticket
@@ -59,6 +59,6 @@ Use separate `-m` arguments for paragraphs and footers. Never put literal
 
 ```bash
 git commit -m "fix(api): Handle null response in user endpoint" \
-  -m "Return 404 when the user API finds a deleted account." \
+  -m "Return `404` when `GET /api/user` finds a deleted account." \
   -m "Fix: #5678"
 ```
