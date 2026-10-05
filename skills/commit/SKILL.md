@@ -33,6 +33,12 @@ Use:
 - Use the body only when useful. Explain what changed, and especially why the
   change was needed, including previous behavior or motivation when it helps.
   Wrap body lines at 72 characters.
+- Omit generic test-coverage summaries such as "Add coverage for X and Y"
+  or "Cover X with tests", and routine verification details such as commands
+  run, passing test or lint results, and clean diff checks. Explain the
+  behavior and technical reason for the change; mention tests only when
+  the test change itself is the substance of the commit. Report routine
+  verification in the work summary instead of the commit message.
 - In the body, wrap keywords, type names, function names, and other identifiers in single backticks (e.g., `MyType`, `myFunction`, `keyword`).
 - Put code snippets in fenced code blocks with triple backticks and a language
   identifier.
