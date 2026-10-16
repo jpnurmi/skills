@@ -50,6 +50,7 @@ When `request_user_input_async` is available, use the following input for a bare
 - For a specific organization, filter with `--repo "${org}/*"`, where `org` is its slug. Keep the wildcard quoted. For all activity, omit `--repo`. Both scopes report the authenticated user's activity, not the whole team's activity.
 - Resolve the requested timeframe as inclusive UTC dates. For the past seven dates, including today, use `"6 days ago" today`. For an explicit “last week,” use `last week` (previous ISO calendar week, Monday–Sunday). Honor other requested periods and show the resolved dates from the report header.
 - If the user requests separate daily entries for a range, collect and summarize each date separately. Otherwise, summarize the requested period together.
+- Include `MENTIONED IN` entries for issues and PRs using their mention-event dates. Mentions stay under the repository containing the issue or PR.
 
 Example for a specific organization over seven dates:
 
@@ -78,8 +79,8 @@ Read both the report and any warnings. If execution fails, report the concrete b
 
 ## Write meeting highlights
 
-- Prioritize projects where the user implemented features or fixes during the requested period, supported by authored PRs or commits. Omit projects with only reviews or comments unless the user explicitly asks to include them. Issue creation or discussion alone does not establish implementation.
-- Group related implementation work into themes or outcomes, even across repositories. Lead with the most substantial work; avoid a chronological log or one bullet per PR. Include reviews or comments only as brief supporting context for the user's implementation work. If no implementation activity is found, say so rather than filling the summary with review-only projects.
+- Prioritize projects where the user implemented features or fixes during the requested period, supported by authored PRs or commits. Inspect mention context for other substantive work, such as release coordination; a mention alone does not establish work performed. Omit projects with only reviews or comments unless the user explicitly asks to include them. Issue creation or discussion alone does not establish implementation.
+- Group related work into themes or outcomes, even across repositories. Lead with the most substantial work; avoid a chronological log or one bullet per PR. Include reviews or comments only as brief supporting context for the user's substantive work. If no substantive work is found, say so rather than filling the summary with review-only projects.
 - Select details that help technical colleagues understand changed behavior, affected components, significant implementation choices, integration risks, or follow-up coordination. Name relevant components and mechanisms. Include tradeoffs, blockers, or next steps only when the evidence establishes them; omit routine test additions, minor cleanup, and mechanical changes unless they explain a substantial theme.
 - Give each theme a clear, concise area title on its own line, in bold and without a bullet marker. After a blank line, add a flat bullet list: first a one-line summary of the work, then one to three short bullets elaborating on concrete changes, tests, or other distinct details without repeating the summary. Separate topics with a blank line. Usually three to six themes suffice; use fewer themes or details when evidence is sparse.
 - Preserve status: distinguish merged work, open or draft work, investigation, and reviews. A merge does not establish deployment; a review does not establish authorship. Do not infer impact, completion, blockers, or next steps from titles alone.

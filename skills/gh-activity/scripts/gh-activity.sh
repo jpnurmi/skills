@@ -303,6 +303,62 @@ $heads
 $prs"
 }
 
+function _gh-activity-mentions() {
+  local user=$1 from=$2 to=$3 response from_date=${2%%T*} to_date=${3%%T*}
+
+  response=$(gh api graphql --paginate --slurp \
+    -f query='query($q: String!, $endCursor: String) {
+      search(query: $q, type: ISSUE, first: 100, after: $endCursor) {
+        nodes {
+          __typename
+          ... on Issue {
+            title
+            number
+            url
+            repository { nameWithOwner }
+            timelineItems(last: 100, itemTypes: [MENTIONED_EVENT]) {
+              nodes {
+                ... on MentionedEvent { createdAt actor { login } }
+              }
+            }
+          }
+          ... on PullRequest {
+            title
+            number
+            url
+            repository { nameWithOwner }
+            timelineItems(last: 100, itemTypes: [MENTIONED_EVENT]) {
+              nodes {
+                ... on MentionedEvent { createdAt actor { login } }
+              }
+            }
+          }
+        }
+        pageInfo { hasNextPage endCursor }
+      }
+    }' \
+    -f q="mentions:$user created:<=$to_date updated:>=$from_date sort:updated-desc") || return
+
+  jq --arg user "$user" --arg from "$from" --arg to "$to" -c '
+    [.[].data.search.nodes[] as $item
+      | $item.timelineItems.nodes[]
+      | select(.actor.login == $user)
+      | select(.createdAt >= $from and .createdAt <= $to)
+      | (if $item.__typename == "PullRequest" then "PR" else "ISSUE" end) as $kind
+      | {
+          repo: $item.repository.nameWithOwner,
+          key: "\($kind):\($item.repository.nameWithOwner)#\($item.number)",
+          kind: $kind,
+          label: "MENTIONED IN",
+          occurredAt: .createdAt,
+          title: $item.title,
+          number: $item.number,
+          artifactUrl: $item.url
+        }
+    ]
+  ' <<< "$response"
+}
+
 function _gh-activity-repos() (
   local repo pattern
 
@@ -324,7 +380,7 @@ function _gh-activity-repos() (
 
 function gh-activity() {
   local from_arg to_arg week_arg week_range month_arg month_range year user from to begin end from_epoch to_epoch event_cutoff week month
-  local pr_result prs heads contributions events report pattern repos i missing key repo number metadata
+  local pr_result prs heads contributions events mentions report pattern repos i missing key repo number metadata
   local -a args=() patterns=()
 
   while (($# > 0)); do
@@ -445,7 +501,7 @@ function gh-activity() {
       contributions=[]
     fi
   else
-    echo "gh-activity: contribution lookup is limited to one year; showing pull requests and recent events" >&2
+    echo "gh-activity: contribution lookup is limited to one year; showing pull requests, mentions and recent events" >&2
     contributions=[]
   fi
 
@@ -453,13 +509,19 @@ function gh-activity() {
   if [[ "$to" < "$event_cutoff" ]]; then
     events=[]
   elif ! events=$(_gh-activity-events "$user" "$from" "$to" "$heads" "$prs"); then
-    echo "gh-activity: event lookup failed; showing contributions and pull requests" >&2
+    echo "gh-activity: event lookup failed; showing other activity" >&2
     events=[]
+  fi
+
+  if ! mentions=$(_gh-activity-mentions "$user" "$from" "$to"); then
+    echo "gh-activity: mention lookup failed; showing other activity" >&2
+    mentions=[]
   fi
 
   repos=$(jq -sr 'add | map(.repo) | unique[]' <<< "$prs
 $contributions
-$events") || return
+$events
+$mentions") || return
   repos=$(_gh-activity-repos "${patterns[@]}" <<< "$repos") || return
 
   missing=$(jq -sr --arg repos "$repos" '
@@ -471,7 +533,8 @@ $events") || return
     | .[0] | [.key, .repo, .number] | @tsv
   ' <<< "$prs
 $contributions
-$events") || return
+$events
+$mentions") || return
   while IFS=$'\t' read -r key repo number; do
     [[ -n "$key" ]] || continue
     if metadata=$(gh api "repos/$repo/issues/$number" --jq '{title, html_url}'); then
@@ -575,7 +638,8 @@ $events") || return
     | .[].text
   ' <<< "$prs
 $contributions
-$events") || return
+$events
+$mentions") || return
 
   begin=$(_date -d "$from" --utc "+%a %Y-%m-%d")
   end=$(_date -d "$to" --utc "+%a %Y-%m-%d")
