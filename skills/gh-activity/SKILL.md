@@ -107,10 +107,10 @@ Prefer “Opened a draft for token refresh” over “Shipped seamless authentic
 
 ## Write time-tracking or invoicing keywords
 
-- For personal time tracking, select concrete tasks that help the user remember work performed: implementation, fixes, debugging, testing, investigation, maintenance, and substantive reviews or discussions. Include meaningful small tasks and unfinished work even when they do not merit a meeting highlight. Retain useful component or issue terminology and group repeated work on the same task.
+- For personal time tracking, use **terse task labels**: keep only the essential component and topic for each task. Compress descriptive phrases to recognizable keywords. **Brevity is mandatory and takes priority over completeness.** Omit trivial chores, secondary details, and explanations.
 - For customer invoicing, group the requested period's work by the supplied customer/project context and recognizable technical project or component names. Describe the work performed on each area, such as implementation, fixes, investigation, testing, or review. Collapse individual commits and repeated daily tasks into concise service descriptions; omit internal identifiers and mechanical churn that do not help the customer identify the work. Preserve investigation, review, and unfinished status instead of implying delivery.
 - Review-only work can be included in either keyword purpose. Do not rank tasks by event counts or infer effort from merge status. Omit generic filler.
-- Use concrete keywords or short noun phrases, usually three to five, with fewer when evidence is sparse. Do not write full sentences or copy PR titles wholesale.
+- Use concrete keywords or short noun phrases. For customer invoicing, usually use three to five, with fewer when evidence is sparse. Do not write full sentences or copy PR titles wholesale.
 - Base keywords on report evidence. For vague titles, fetch only the needed PR or issue context through `gh` using returned URLs. Add qualifiers such as “review,” “investigation,” or “draft” when needed to preserve status and avoid implying authorship or completion.
 - Return one line of keywords separated by a comma and a space in a fenced `text` block per requested period or daily entry. Keep bullets, links, dates, durations, and trailing sentence punctuation out of the description. Put the scope/date line and any collection caveat outside the block. Do not infer hours worked from GitHub activity.
 
@@ -119,10 +119,10 @@ Example style (illustrative, not evidence):
 Personal time tracking:
 
 ```text
-token refresh, session-expiry tests, retry handling review
+token refresh, retry review
 ```
 
-Customer invoicing, grouping the same activity by technical area:
+Customer invoicing:
 
 ```text
 authentication development and testing, retry handling review
