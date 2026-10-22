@@ -107,19 +107,19 @@ Prefer “Opened a draft for token refresh” over “Shipped seamless authentic
 
 ## Write time-tracking or invoicing keywords
 
-- For personal time tracking, use **terse labels for the main work areas**, usually one to three words each. **Brevity is mandatory and takes priority over completeness.** Use familiar shorthand and component names. Keep well-known abbreviations uppercase and preserve conventional capitalization for names. Fold supporting fixes, tests, and cleanup into their main area. Omit trivial chores, secondary details, and explanations.
+- For personal time tracking, use **terse task or component labels**, usually one to three words each. **Brevity is mandatory for each label.** Preserve distinct kinds of substantial work even within one feature, PR, or repository. Merge repeated activity and supporting fixes, tests, or cleanup only into the task or component they support. Use familiar shorthand and component names. Keep well-known abbreviations uppercase and preserve conventional capitalization for names. Omit trivial chores, secondary details, and explanations.
 - For customer invoicing, group the requested period's work by the supplied customer/project context and recognizable technical project or component names. Describe the work performed on each area, such as implementation, fixes, investigation, testing, or review. Collapse individual commits and repeated daily tasks into concise service descriptions; omit internal identifiers and mechanical churn that do not help the customer identify the work. Preserve investigation, review, and unfinished status instead of implying delivery.
 - For personal time tracking, omit trivial side reviews. Consider a separate review label only when the PR's scope and review context establish substantial work. A review event alone does not qualify. Customer invoicing may include review-only work. Do not rank tasks by event counts or infer effort from merge status. Omit generic filler.
 - Use concrete keywords or short noun phrases. For customer invoicing, usually use three to five, with fewer when evidence is sparse. Do not write full sentences or copy PR titles wholesale.
-- Base keywords on report evidence. For vague titles, fetch only the needed PR or issue context through `gh` using returned URLs. Use neutral topic labels for personal time tracking without routine status qualifiers. Add “review,” “investigation,” or “draft” only when omission would imply authorship or completion.
+- Base keywords on report evidence. For vague titles or unclear task boundaries, fetch only the needed PR or issue context through `gh` using returned URLs. Use neutral topic labels for personal time tracking without routine status qualifiers. Add “review,” “investigation,” or “draft” only when omission would imply authorship or completion.
 - Return one line of keywords separated by a comma and a space in a fenced `text` block per requested period or daily entry. Keep bullets, links, dates, durations, and trailing sentence punctuation out of the description. Put the scope/date line and any collection caveat outside the block. Do not infer hours worked from GitHub activity.
 
 Example style (illustrative, not evidence):
 
-Personal time tracking (synthetic):
+Personal time tracking (synthetic: separate indexing, API, and UI work for one search feature, plus supporting tests):
 
 ```text
-search cache, SMTP, parser
+indexer, search API, search UI
 ```
 
 Customer invoicing:
